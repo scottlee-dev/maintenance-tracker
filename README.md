@@ -4,10 +4,21 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-brightgreen.svg)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.4-blue.svg)
 ![OpenAPI](https://img.shields.io/badge/OpenAPI%20(Swagger)-3.0-green.svg)
+![Deploy Status](https://img.shields.io/badge/Render-Live%20Demo-success.svg)
 
 This is an enterprise-grade RESTful API built using **Spring Boot** and **PostgreSQL**. It is designed to record vehicle maintenance history and automatically calculate maintenance schedules based on mileage.
 
 The project implements core backend engineering practices, including Clean Layered Architecture, immutable dependency injection, relational database modeling, and automated data seeding for testing.
+
+---
+
+## 🚀 Live Demo (Interactive Swagger UI)
+
+Experience the live cloud-hosted API and test endpoints directly in your browser without installing anything:
+
+👉 **[Launch Interactive Swagger UI Demo](https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html)**
+
+*(Note: Hosted on a free cloud instance. The initial request may take 30–50 seconds to wake up the server from sleep mode.)*
 
 ---
 
