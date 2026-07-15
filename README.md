@@ -62,7 +62,7 @@ cd maintenance-tracker-api
 
 Once the server starts, open your browser and visit:
 
-👉 <a href="http://localhost:8080/" target="_blank"><strong>http://localhost:8080/</strong></a>
+👉 **[http://localhost:8080/](http://localhost:8080/)**
 
 
 ---
@@ -73,16 +73,15 @@ Once the server starts, open your browser and visit:
 
 Don't have time to spin up a local instance? If you want a fast look at the architecture and UI:
 
-👉 <a href="https://youtu.be/ddNzAs8IrRo" target="_blank"><strong>Watch YouTube Walkthrough</strong></a>
+👉 **[Watch YouTube Walkthrough ](https://youtu.be/ddNzAs8IrRo)**
 
 
 ### 🌐 Live Cloud Instance
 
 *Note: Hosted on a free Render cloud instance. Initial requests may take ~3 minutes to wake up from sleep mode.*
 
-* <a href="https://maintenance-tracker-api-ruyc.onrender.com/" target="_blank"><strong>Dashboard</strong></a>
-* <a href="https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html" target="_blank"><strong>Swagger UI</strong></a>
-
+* **Dashboard**: [https://maintenance-tracker-api-ruyc.onrender.com/](https://maintenance-tracker-api-ruyc.onrender.com/)
+* **Swagger UI:** [https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html](https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html)
 
 
 ---
