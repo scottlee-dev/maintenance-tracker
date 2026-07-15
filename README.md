@@ -1,5 +1,5 @@
 
-```markdown
+
 # 🚗 Enterprise Vehicle & Fleet Maintenance Tracking SaaS
 
 ![Java](https://img.shields.io/badge/Java-21%2B-orange.svg)
@@ -21,7 +21,7 @@ You can clone and run this application locally on your machine in under 3 minute
 
 ### Prerequisites
 * **JDK 21** or newer
-* **PostgreSQL** (Running locally on port `5432` or via Docker)
+* **PostgreSQL** 
 * **Git** & **Maven**
 
 ### 1. Database Configuration
