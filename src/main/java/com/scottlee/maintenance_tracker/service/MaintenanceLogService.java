@@ -39,4 +39,23 @@ public class MaintenanceLogService {
         }
         return logRepository.findByVehicleIdOrderByServiceDateDesc(vehicleId);
     }
+    @Transactional
+    public MaintenanceLog updateLog(Long vehicleId, Long logId, MaintenanceLog updatedLog) {
+        MaintenanceLog existing = logRepository.findById(logId)
+                .orElseThrow(() -> new IllegalArgumentException("Log not found with ID: " + logId));
+        existing.setServiceName(updatedLog.getServiceName());
+        existing.setServiceDate(updatedLog.getServiceDate());
+        existing.setMileageAtService(updatedLog.getMileageAtService());
+        existing.setCost(updatedLog.getCost());
+        existing.setNotes(updatedLog.getNotes());
+        return logRepository.save(existing);
+    }
+
+    @Transactional
+    public void deleteLog(Long vehicleId, Long logId) {
+        if (!logRepository.existsById(logId)) {
+            throw new IllegalArgumentException("Log not found with ID: " + logId);
+        }
+        logRepository.deleteById(logId);
+    }
 }

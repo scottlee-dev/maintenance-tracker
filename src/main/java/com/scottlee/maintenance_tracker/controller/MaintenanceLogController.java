@@ -30,5 +30,15 @@ public class MaintenanceLogController {
 
 		return logService.getLogsByVehicleId(vehicleId);
 	}
+	@PutMapping("/{logId}")
+	public MaintenanceLog updateLog(@PathVariable Long vehicleId, @PathVariable Long logId, @RequestBody MaintenanceLog log) {
+		return logService.updateLog(vehicleId, logId, log);
+	}
+
+	@DeleteMapping("/{logId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteLog(@PathVariable Long vehicleId, @PathVariable Long logId) {
+		logService.deleteLog(vehicleId, logId);
+	}
 
 }

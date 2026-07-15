@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,4 +20,6 @@ public class MaintenanceRule {
     @Column(name = "interval_months")
 
     private Integer intervalMonths;
+    @Column(name = "fuel_type")
+    private String fuelType;
 }

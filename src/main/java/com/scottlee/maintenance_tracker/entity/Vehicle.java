@@ -21,6 +21,7 @@ public class Vehicle {
     private Integer year;
     @Column(name = "current_mileage")
     private Integer currentMileage;
-
+    @Column(name = "fuel_type")
+    private String fuelType;
 
 }

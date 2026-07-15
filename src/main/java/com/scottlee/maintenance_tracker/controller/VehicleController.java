@@ -34,4 +34,17 @@ public class VehicleController {
     public List<MaintenanceStatusDto> getMaintenanceStatus(@PathVariable Long vehicleId) {
         return vehicleService.getMaintenanceStatusReport(vehicleId);
     }
+
+    @PutMapping("/{id}")
+    public Vehicle updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
+        return vehicleService.updateVehicle(id, vehicle);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteVehicle(@PathVariable Long id) {
+        vehicleService.deleteVehicle(id);
+    }
+
+
 }

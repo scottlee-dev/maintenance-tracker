@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scott's Auto Maintenance Tracker</title>
+    <!-- Modern Enterprise SaaS UI Styling -->
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 3rem;
+        }
+
+        header {
+            background-color: #1e293b;
+            color: white;
+            padding: 1.25rem 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        .container {
+            max-width: 1450px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 950px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: var(--text-muted);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.625rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        input:disabled {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.625rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-sm {
+            width: auto;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.75rem;
+            border-radius: 0.375rem;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-secondary {
+            background-color: var(--text-muted);
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .vehicle-item {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #f8fafc;
+        }
+
+        .vehicle-item:hover, .vehicle-item.active {
+            border-color: var(--primary);
+            background-color: #eef2ff;
+        }
+
+        .vehicle-name {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .vehicle-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .fuel-badge {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .rule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        .rule-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+
+        .status-box {
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .status-box.due {
+            border-color: var(--danger);
+            background-color: #fef2f2;
+        }
+
+        .status-box.ok {
+            border-color: var(--success);
+            background-color: #ecfdf5;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .status-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.3;
+            word-break: break-word;
+            flex: 1;
+        }
+
+
+        .status-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge-due {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .badge-ok {
+            background-color: var(--success);
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .action-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>⚙️ Auto Maintenance Tracker</h1>
+    <p>Engineered by Scott Lee | Enterprise Fleet & Personal Automotive Management SaaS</p>
+</header>
+
+<div class="container">
+    <!-- LEFT SIDEBAR -->
+    <aside>
+        <div class="card">
+            <div class="card-title">🚗 Register New Vehicle</div>
+            <form id="vehicleForm">
+                <div class="form-group"><label>Brand / Make</label><input type="text" id="make"
+                                                                          placeholder="e.g., Honda, Tesla" required>
+                </div>
+                <div class="form-group"><label>Model</label><input type="text" id="model"
+                                                                   placeholder="e.g., CR-V, Model Y" required></div>
+                <div class="form-group"><label>Model Year</label><input type="number" id="year" placeholder="e.g., 2014"
+                                                                        required></div>
+                <div class="form-group"><label>Current Mileage (Miles)</label><input type="number" id="currentMileage"
+                                                                                     required></div>
+                <!-- NEW: Drivetrain / Fuel Type Selection -->
+                <div class="form-group">
+                    <label>Drivetrain / Fuel Type</label>
+                    <select id="fuelType" required>
+                        <option value="GASOLINE">Gasoline (ICE)</option>
+                        <option value="EV">Electric Vehicle (EV / Tesla)</option>
+                        <option value="HYBRID">Hybrid</option>
+                        <option value="DIESEL">Diesel</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Add Vehicle to Garage</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🏢 My Garage</div>
+            <div id="vehicleList"><p style="color: var(--text-muted); font-size: 0.875rem;">No vehicles found.</p></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>⚙️ Smart Rules</span>
+                <button onclick="openAddRuleModal()" class="btn btn-sm" style="background-color: #0f172a;">+ Add Rule
+                </button>
+            </div>
+            <div id="rulesList" style="max-height: 250px; overflow-y: auto;"></div>
+        </div>
+    </aside>
+
+    <!-- RIGHT DASHBOARD -->
+    <main id="mainBoard" class="hidden">
+        <div class="card"
+             style="background: #e0e7ff; border-color: #c7d2fe; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 id="selectedVehicleTitle" style="color: #3730a3; font-size: 1.25rem; font-weight: 700;">2014 Honda
+                    CR-V</h2>
+                <p id="selectedVehicleSubtitle" style="color: #4338ca; font-size: 0.875rem;">Current Mileage: 145,000 mi
+                    | Drivetrain: GASOLINE</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button onclick="openEditVehicleModal()" class="btn btn-sm" style="background-color: #3730a3;">✏️ Edit
+                    Vehicle
+                </button>
+                <button onclick="deleteCurrentVehicle()" class="btn btn-sm btn-danger">🗑️ Remove</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🚨 Upcoming Maintenance (Filtered for Vehicle Drivetrain)</div>
+            <div id="statusGrid" class="status-grid"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📝 Log Service History</div>
+            <form id="logForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Service Item (Filtered by Drivetrain)</label>
+                        <select id="serviceName" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Custom Item Name (Active only if 'Other' selected)</label>
+                        <input type="text" id="customServiceName" placeholder="e.g., Transmission Fluid" disabled>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group"><label>Date of Service</label><input type="date" id="serviceDate" required>
+                    </div>
+                    <div class="form-group"><label>Mileage at Service</label><input type="number" id="mileageAtService"
+                                                                                    required></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group"><label>Cost ($)</label><input type="number" step="0.01" id="cost"></div>
+                    <div class="form-group"><label>Technician Notes</label><input type="text" id="notes"
+                                                                                  placeholder="e.g., Synthetic 0W-20 at Midas">
+                    </div>
+                </div>
+                <button type="submit" class="btn" style="background-color: #0f172a;">Save Service Record</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📜 Historical Service Archives</div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Service Item</th>
+                    <th>Mileage</th>
+                    <th>Cost</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="logsTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL: Edit Vehicle -->
+<div id="editVehicleModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="card-title" style="margin-bottom: 1rem;">✏️ Edit Vehicle Details</div>
+        <form id="editVehicleForm">
+            <div class="form-group"><label>Brand / Make</label><input type="text" id="editMake" required></div>
+            <div class="form-group"><label>Model</label><input type="text" id="editModel" required></div>
+            <div class="form-group"><label>Model Year</label><input type="number" id="editYear" required></div>
+            <div class="form-group"><label>Current Mileage</label><input type="number" id="editMileage" required></div>
+            <div class="form-group">
+                <label>Drivetrain / Fuel Type</label>
+                <select id="editFuelType" required>
+                    <option value="GASOLINE">Gasoline (ICE)</option>
+                    <option value="EV">Electric Vehicle (EV / Tesla)</option>
+                    <option value="HYBRID">Hybrid</option>
+                    <option value="DIESEL">Diesel</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" onclick="closeEditVehicleModal()" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn">Update Vehicle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: Edit Log -->
+<div id="editLogModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="card-title" style="margin-bottom: 1rem;">✏️ Edit Maintenance Record</div>
+        <form id="editLogForm">
+            <input type="hidden" id="editLogId">
+            <div class="form-group"><label>Service Item Name</label><input type="text" id="editLogName" required></div>
+            <div class="form-group"><label>Date</label><input type="date" id="editLogDate" required></div>
+            <div class="form-group"><label>Mileage at Service</label><input type="number" id="editLogMileage" required>
+            </div>
+            <div class="form-group"><label>Cost ($)</label><input type="number" step="0.01" id="editLogCost"></div>
+            <div class="form-group"><label>Notes</label><input type="text" id="editLogNotes"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" onclick="closeEditLogModal()" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn">Update Record</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: Add/Edit Maintenance Rule -->
+<div id="ruleModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="card-title" style="margin-bottom: 1rem;" id="ruleModalTitle">⚙️ Add Maintenance Rule</div>
+        <form id="ruleForm">
+            <input type="hidden" id="ruleId">
+            <div class="form-group"><label>Service Rule Name</label><input type="text" id="ruleName"
+                                                                           placeholder="e.g., Coolant Flush" required>
+            </div>
+            <div class="form-group"><label>Interval Mileage (Miles)</label><input type="number" id="ruleMileage"
+                                                                                  placeholder="e.g., 30000" required>
+            </div>
+            <div class="form-group"><label>Interval Months</label><input type="number" id="ruleMonths"
+                                                                         placeholder="e.g., 24" required></div>
+            <div class="form-group">
+                <label>Applicable Drivetrain</label>
+                <select id="ruleFuelType" required>
+                    <option value="ALL">All Vehicles (ALL)</option>
+                    <option value="GASOLINE">Gasoline / ICE Only (GASOLINE)</option>
+                    <option value="EV">Electric Vehicles Only (EV)</option>
+                    <option value="HYBRID">Hybrid Only (HYBRID)</option>
+                    <option value="DIESEL">Diesel Only (DIESEL)</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" onclick="closeRuleModal()" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn">Save Rule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let currentVehicleId = null;
+    let currentVehicleData = null;
+    let availableRules = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchVehicles();
+        fetchRules();
+        document.getElementById('serviceDate').valueAsDate = new Date();
+    });
+
+    document.getElementById('serviceName').addEventListener('change', (e) => {
+        const customInput = document.getElementById('customServiceName');
+        if (e.target.value === 'Custom Service') {
+            customInput.disabled = false;
+            customInput.focus();
+        } else {
+            customInput.disabled = true;
+            customInput.value = '';
+        }
+    });
+
+    // Helper: Evaluates if a maintenance rule applies to a vehicle's drivetrain
+    function isRuleApplicable(rule, vehicleFuelType) {
+        const ruleFuel = (rule.fuelType || 'ALL').toUpperCase();
+        const vFuel = (vehicleFuelType || 'GASOLINE').toUpperCase();
+        if (ruleFuel === 'ALL') return true;
+        if (ruleFuel === vFuel) return true;
+        if (vFuel === 'HYBRID' && ruleFuel === 'GASOLINE') return true;
+        return false;
+    }
+
+    async function fetchRules() {
+        const response = await fetch('/api/rules');
+        availableRules = await response.json();
+
+        const rulesList = document.getElementById('rulesList');
+        rulesList.innerHTML = '';
+        availableRules.forEach(r => {
+            const div = document.createElement('div');
+            div.className = 'rule-item';
+            div.innerHTML = `
+                <div>
+                    <strong>${r.serviceName}</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">
+                        Every ${r.intervalMiles.toLocaleString()} mi | <span style="background: #f1f5f9; padding: 1px 4px; border-radius: 3px; border: 1px solid #cbd5e1;">${r.fuelType || 'ALL'}</span>
+                    </div>
+                </div>
+                <div>
+                    <button onclick='openEditRuleModal(${JSON.stringify(r)})' class="btn btn-sm" style="background: var(--text-muted); padding: 2px 6px;">✏️</button>
+                    <button onclick="deleteRule(${r.id})" class="btn btn-sm btn-danger" style="padding: 2px 6px;">🗑️</button>
+                </div>
+            `;
+            rulesList.appendChild(div);
+        });
+
+        if (currentVehicleData) populateServiceDropdown(currentVehicleData.fuelType);
+    }
+
+    function populateServiceDropdown(vehicleFuelType) {
+        const select = document.getElementById('serviceName');
+        select.innerHTML = '';
+
+        const filteredRules = availableRules.filter(r => isRuleApplicable(r, vehicleFuelType));
+
+        filteredRules.forEach(r => {
+            const opt = document.createElement('option');
+            opt.value = r.serviceName;
+            opt.innerText = `${r.serviceName} (${r.intervalMiles.toLocaleString()} mi rule)`;
+            select.appendChild(opt);
+        });
+        const customOpt = document.createElement('option');
+        customOpt.value = "Custom Service";
+        customOpt.innerText = "-- Other Custom Maintenance --";
+        select.appendChild(customOpt);
+    }
+
+    function openAddRuleModal() {
+        document.getElementById('ruleModalTitle').innerText = '⚙️ Add Maintenance Rule';
+        document.getElementById('ruleId').value = '';
+        document.getElementById('ruleForm').reset();
+        document.getElementById('ruleModal').classList.remove('hidden');
+    }
+
+    function openEditRuleModal(rule) {
+        document.getElementById('ruleModalTitle').innerText = '✏️ Edit Maintenance Rule';
+        document.getElementById('ruleId').value = rule.id;
+        document.getElementById('ruleName').value = rule.serviceName;
+        document.getElementById('ruleMileage').value = rule.intervalMiles;
+        document.getElementById('ruleMonths').value = rule.intervalMonths || 12;
+        document.getElementById('ruleFuelType').value = rule.fuelType || 'ALL';
+        document.getElementById('ruleModal').classList.remove('hidden');
+    }
+
+    function closeRuleModal() {
+        document.getElementById('ruleModal').classList.add('hidden');
+    }
+
+    document.getElementById('ruleForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('ruleId').value;
+        const payload = {
+            serviceName: document.getElementById('ruleName').value,
+            intervalMiles: parseInt(document.getElementById('ruleMileage').value),
+            intervalMonths: parseInt(document.getElementById('ruleMonths').value),
+            fuelType: document.getElementById('ruleFuelType').value
+        };
+        const url = id ? `/api/rules/${id}` : '/api/rules';
+        await fetch(url, {
+            method: id ? 'PUT' : 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        closeRuleModal();
+        fetchRules();
+        if (currentVehicleId) fetchMaintenanceStatus(currentVehicleId);
+    });
+
+    async function deleteRule(id) {
+        if (!confirm('Remove this rule?')) return;
+        await fetch(`/api/rules/${id}`, {method: 'DELETE'});
+        fetchRules();
+        if (currentVehicleId) fetchMaintenanceStatus(currentVehicleId);
+    }
+
+    document.getElementById('vehicleForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+            make: document.getElementById('make').value,
+            model: document.getElementById('model').value,
+            year: parseInt(document.getElementById('year').value),
+            currentMileage: parseInt(document.getElementById('currentMileage').value),
+            fuelType: document.getElementById('fuelType').value
+        };
+        await fetch('/api/vehicles', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        document.getElementById('vehicleForm').reset();
+        fetchVehicles();
+    });
+
+    async function fetchVehicles() {
+        const response = await fetch('/api/vehicles');
+        const vehicles = await response.json();
+        const listContainer = document.getElementById('vehicleList');
+        listContainer.innerHTML = '';
+        if (vehicles.length === 0) {
+            listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.875rem;">No vehicles found.</p>';
+            if (currentVehicleId) document.getElementById('mainBoard').classList.add('hidden');
+            return;
+        }
+        vehicles.forEach(vehicle => {
+            const item = document.createElement('div');
+            item.className = `vehicle-item ${vehicle.id === currentVehicleId ? 'active' : ''}`;
+            item.innerHTML = `
+                <div class="vehicle-name">
+                    <span>${vehicle.year} ${vehicle.make} ${vehicle.model}</span>
+                    <span class="fuel-badge">${vehicle.fuelType || 'GASOLINE'}</span>
+                </div>
+                <div class="vehicle-meta">ID: #${vehicle.id} | Mileage: ${vehicle.currentMileage.toLocaleString()} mi</div>
+            `;
+            item.addEventListener('click', () => selectVehicle(vehicle));
+            listContainer.appendChild(item);
+        });
+        if (currentVehicleId) {
+            const updated = vehicles.find(v => v.id === currentVehicleId);
+            if (updated) selectVehicle(updated);
+        }
+    }
+
+    function selectVehicle(vehicle) {
+        currentVehicleId = vehicle.id;
+        currentVehicleData = vehicle;
+        document.getElementById('mainBoard').classList.remove('hidden');
+        document.getElementById('selectedVehicleTitle').innerText = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
+        document.getElementById('selectedVehicleSubtitle').innerText = `Current Mileage: ${vehicle.currentMileage.toLocaleString()} mi | Drivetrain: ${vehicle.fuelType || 'GASOLINE'}`;
+        document.querySelectorAll('.vehicle-item').forEach(el => el.classList.remove('active'));
+
+        populateServiceDropdown(vehicle.fuelType);
+        fetchMaintenanceStatus(vehicle.id);
+        fetchLogs(vehicle.id);
+    }
+
+    async function deleteCurrentVehicle() {
+        if (!confirm(`Remove this ${currentVehicleData.year} ${currentVehicleData.model}?`)) return;
+        await fetch(`/api/vehicles/${currentVehicleId}`, {method: 'DELETE'});
+        currentVehicleId = null;
+        document.getElementById('mainBoard').classList.add('hidden');
+        fetchVehicles();
+    }
+
+    function openEditVehicleModal() {
+        document.getElementById('editMake').value = currentVehicleData.make;
+        document.getElementById('editModel').value = currentVehicleData.model;
+        document.getElementById('editYear').value = currentVehicleData.year;
+        document.getElementById('editMileage').value = currentVehicleData.currentMileage;
+        document.getElementById('editFuelType').value = currentVehicleData.fuelType || 'GASOLINE';
+        document.getElementById('editVehicleModal').classList.remove('hidden');
+    }
+
+    function closeEditVehicleModal() {
+        document.getElementById('editVehicleModal').classList.add('hidden');
+    }
+
+    document.getElementById('editVehicleForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+            make: document.getElementById('editMake').value,
+            model: document.getElementById('editModel').value,
+            year: parseInt(document.getElementById('editYear').value),
+            currentMileage: parseInt(document.getElementById('editMileage').value),
+            fuelType: document.getElementById('editFuelType').value
+        };
+        await fetch(`/api/vehicles/${currentVehicleId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        closeEditVehicleModal();
+        fetchVehicles();
+    });
+
+    async function fetchMaintenanceStatus(vehicleId) {
+        const response = await fetch(`/api/vehicles/${vehicleId}/maintenance-status`);
+        const statuses = await response.json();
+        const grid = document.getElementById('statusGrid');
+        grid.innerHTML = '';
+        statuses.forEach(status => {
+            const isDue = status.due;
+            const box = document.createElement('div');
+            box.className = `status-box ${isDue ? 'due' : 'ok'}`;
+            box.innerHTML = `
+                <div>
+                    <div class="status-header">
+                        <div class="status-title">${status.serviceName}</div>
+                        <span class="status-badge ${isDue ? 'badge-due' : 'badge-ok'}">${isDue ? 'Action Required' : 'Good Condition'}</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Interval Rule: Every ${status.intervalMiles.toLocaleString()} mi</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">Last Serviced: ${status.lastServiceMileage === 0 ? 'No Record' : status.lastServiceMileage.toLocaleString() + ' mi'}</p>
+                </div>
+                <div style="margin-top: 0.75rem; font-weight: 600; font-size: 0.875rem; color: ${isDue ? 'var(--danger)' : 'var(--success)'};">
+                    ${isDue ? '⚠️ Overdue by ' + Math.abs(status.milesRemaining).toLocaleString() + ' mi' : '✅ ' + status.milesRemaining.toLocaleString() + ' mi remaining'}
+                </div>
+            `;
+            grid.appendChild(box);
+        });
+    }
+
+    document.getElementById('logForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let chosenService = document.getElementById('serviceName').value;
+        if (chosenService === 'Custom Service') {
+            chosenService = document.getElementById('customServiceName').value || 'General Maintenance';
+        }
+        const payload = {
+            serviceName: chosenService,
+            serviceDate: document.getElementById('serviceDate').value,
+            mileageAtService: parseInt(document.getElementById('mileageAtService').value),
+            cost: parseFloat(document.getElementById('cost').value || 0),
+            notes: document.getElementById('notes').value
+        };
+        await fetch(`/api/vehicles/${currentVehicleId}/logs`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        document.getElementById('logForm').reset();
+        document.getElementById('serviceDate').valueAsDate = new Date();
+        document.getElementById('customServiceName').disabled = true;
+        fetchMaintenanceStatus(currentVehicleId);
+        fetchLogs(currentVehicleId);
+    });
+
+    async function fetchLogs(vehicleId) {
+        const response = await fetch(`/api/vehicles/${vehicleId}/logs`);
+        const logs = await response.json();
+        const tbody = document.getElementById('logsTableBody');
+        tbody.innerHTML = '';
+        if (logs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No maintenance history recorded yet.</td></tr>';
+            return;
+        }
+        logs.forEach(log => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${log.serviceDate || 'N/A'}</td>
+                <td style="font-weight: 600;">${log.serviceName}</td>
+                <td>${log.mileageAtService ? log.mileageAtService.toLocaleString() + ' mi' : 'N/A'}</td>
+                <td>${log.cost ? '$' + parseFloat(log.cost).toFixed(2) : '$0.00'}</td>
+                <td style="color: var(--text-muted);">${log.notes || '-'}</td>
+                <td class="action-cell">
+                    <button onclick='openEditLogModal(${JSON.stringify(log)})' class="btn btn-sm" style="background-color: var(--text-muted);">✏️ Edit</button>
+                    <button onclick="deleteLog(${log.id})" class="btn btn-sm btn-danger">🗑️</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    async function deleteLog(logId) {
+        if (!confirm('Delete this record?')) return;
+        await fetch(`/api/vehicles/${currentVehicleId}/logs/${logId}`, {method: 'DELETE'});
+        fetchMaintenanceStatus(currentVehicleId);
+        fetchLogs(currentVehicleId);
+    }
+
+    function openEditLogModal(log) {
+        document.getElementById('editLogId').value = log.id;
+        document.getElementById('editLogName').value = log.serviceName;
+        document.getElementById('editLogDate').value = log.serviceDate;
+        document.getElementById('editLogMileage').value = log.mileageAtService;
+        document.getElementById('editLogCost').value = log.cost || '';
+        document.getElementById('editLogNotes').value = log.notes || '';
+        document.getElementById('editLogModal').classList.remove('hidden');
+    }
+
+    function closeEditLogModal() {
+        document.getElementById('editLogModal').classList.add('hidden');
+    }
+
+    document.getElementById('editLogForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const logId = document.getElementById('editLogId').value;
+        const payload = {
+            serviceName: document.getElementById('editLogName').value,
+            serviceDate: document.getElementById('editLogDate').value,
+            mileageAtService: parseInt(document.getElementById('editLogMileage').value),
+            cost: parseFloat(document.getElementById('editLogCost').value || 0),
+            notes: document.getElementById('editLogNotes').value
+        };
+        await fetch(`/api/vehicles/${currentVehicleId}/logs/${logId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        closeEditLogModal();
+        fetchMaintenanceStatus(currentVehicleId);
+        fetchLogs(currentVehicleId);
+    });
+</script>
+</body>
+</html>
