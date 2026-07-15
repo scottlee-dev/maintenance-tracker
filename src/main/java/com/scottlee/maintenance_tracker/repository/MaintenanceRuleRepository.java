@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface MaintenanceRuleRepository extends JpaRepository<MaintenanceRule, Long> {
-    Optional<MaintenanceRule> findByPartName(String partName);
+    Optional<MaintenanceRule> findByServiceName(String serviceName);
 }

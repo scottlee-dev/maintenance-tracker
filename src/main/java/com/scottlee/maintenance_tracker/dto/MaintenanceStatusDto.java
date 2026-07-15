@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class MaintenanceStatusDto {
-    private String partName;
+    private String serviceName;
     private Integer intervalMiles;
     private Integer lastServiceMileage;
     private Integer milesSinceLastService;

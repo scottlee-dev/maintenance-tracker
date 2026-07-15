@@ -1,37 +1,30 @@
 package com.scottlee.maintenance_tracker.entity;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "maintenance_log")
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MaintenanceLog {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(name = "vehicle_id")
+	private Long vehicleId;
+	@Column(name = "part_name")
+	private String serviceName;
+	@Column(name = "service_date")
+	private LocalDate serviceDate;
+	@Column(name = "mileage_at_service")
+	private Integer mileageAtService;
 
+	private BigDecimal cost;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_id",nullable = false)
-
-    private Vehicle vehicle;
-
-    @Column(nullable = false)
-    private String partName;
-
-    @Column(nullable = false)
-    private LocalDate serviceDate;
-
-    @Column(nullable = false)
-    private Integer mileageAtService;
-
-    private String notes;
-
+	private String notes;
 }

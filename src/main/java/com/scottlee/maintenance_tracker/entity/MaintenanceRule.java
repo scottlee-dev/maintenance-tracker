@@ -4,25 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "maintenance_rule")
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MaintenanceRule {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(nullable = false)
-    private String partName;
-
-    @Column(nullable = false)
+    @Column(name = "part_name")
+    private String serviceName;
+    @Column(name = "interval_miles")
     private Integer intervalMiles;
+    @Column(name = "interval_months")
 
-    @Column(nullable = false)
     private Integer intervalMonths;
-
 }

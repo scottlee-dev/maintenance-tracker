@@ -48,12 +48,12 @@ class VehicleServiceTest {
                 .build();
 
         MaintenanceRule mockRule = MaintenanceRule.builder()
-                .partName("0W-20 Synthetic Oil")
+                .serviceName("0W-20 Synthetic Oil")
                 .intervalMiles(8000)
                 .build();
 
         MaintenanceLog mockLog = MaintenanceLog.builder()
-                .partName("0W-20 Synthetic Oil")
+                .serviceName("0W-20 Synthetic Oil")
                 .mileageAtService(145000)
                 .build();
 
@@ -67,7 +67,7 @@ class VehicleServiceTest {
         // Then: Verify remaining mileage calculation (8000 - (150000 - 145000) = 3000 miles remaining) and alert status
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getPartName()).isEqualTo("0W-20 Synthetic Oil");
+        assertThat(result.getFirst().getServiceName()).isEqualTo("0W-20 Synthetic Oil");
         assertThat(result.getFirst().getMilesRemaining()).isEqualTo(3000);
         assertThat(result.getFirst().isDue()).isFalse();
     }
