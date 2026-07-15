@@ -1,6 +1,6 @@
 
 
-# 🚗 Enterprise Vehicle & Fleet Maintenance Tracking SaaS
+# 🚗 Vehicle Maintenance Tracker
 
 ![Java](https://img.shields.io/badge/Java-21%2B-orange.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3%2B-brightgreen.svg)
@@ -8,19 +8,20 @@
 ![Frontend](https://img.shields.io/badge/Frontend-Vanilla%20JS%20%2F%20CSS%20Grid-yellow.svg)
 ![Deploy Status](https://img.shields.io/badge/Cloud%20Deploy-Render%20Live-success.svg)
 
-A full-stack RESTful SaaS application engineered to solve automotive maintenance tracking for vehicle owners.
+A full‑stack RESTful SaaS application built to make automotive maintenance tracking simple and useful.
 
-It was built using Spring Boot, PostgreSQL, and an integrated frontend dashboard based on Vanilla JavaScript and CSS Grid.
-The platform calculates maintenance schedules by analyzing mileage and fuel type.
+This system is built on Spring Boot and PostgreSQL, with a frontend implemented using Vanilla JavaScript and CSS Grid.
+
+It also automatically calculates maintenance schedules based on mileage and fuel type.
 
 ---
 
-## 🚀 Getting Started & Local Setup
+## 🚀 Getting Started: Local Setup
 
 You can clone and run this application locally on your machine in under 3 minutes without configuring complex external frontend dependencies.
 
 ### Prerequisites
-* **JDK 21** or newer
+* **JDK 21+** 
 * **PostgreSQL** 
 * **Git** & **Maven**
 
@@ -34,7 +35,7 @@ CREATE DATABASE maintenance_db;
 
 ### 2. Configure Application Properties
 
-Verify or update your database credentials in `src/main/resources/application.properties`:
+
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/maintenance_db
@@ -51,6 +52,7 @@ Open your terminal and execute the following commands:
 ```bash
 # Clone the repository
 git clone https://github.com/scottlee-dev/maintenance-tracker-api.git
+
 cd maintenance-tracker-api
 
 # Build and start the Spring Boot server
@@ -58,33 +60,38 @@ cd maintenance-tracker-api
 
 ```
 
-Once the application finishes booting, open your browser and navigate to:
-👉 **[http://localhost:8080/](http://localhost:8080/)** to access the Integrated SaaS Dashboard!
+Once the server starts, open your browser and visit:
+
+👉 **[http://localhost:8080/](http://localhost:8080/)** 
 
 ---
 
-## 📺 Live Cloud Demo & Video Walkthrough
+## 📺 Live Demo & Walkthrough
 
 ### 🎥 1-Minute Video Demonstration
 
-Don't have time to spin up a local instance? Watch the full architectural walkthrough and UI demonstration on YouTube:
-👉 **[Watch YouTube Walkthrough & Architecture Demo](https://youtu.be/ddNzAs8IrRo)** 
+Don't have time to spin up a local instance? If you want a fast look at the architecture and UI:
+
+👉 **[Watch YouTube Walkthrough ](https://youtu.be/ddNzAs8IrRo)** 
 
 ### 🌐 Live Cloud Instance
 
-Experience the cloud-deployed application and interact with the REST API directly in your browser:
+*Note: Hosted on a free Render cloud instance. Initial requests may take ~3 minutes to wake up from sleep mode.*
 
-* **Interactive SaaS Dashboard: [https://maintenance-tracker-api-ruyc.onrender.com/](https://maintenance-tracker-api-ruyc.onrender.com/)
-* **OpenAPI / Swagger UI:** [https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html](https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html)
+* **Dashboard**: [https://maintenance-tracker-api-ruyc.onrender.com/](https://maintenance-tracker-api-ruyc.onrender.com/)
+* **Swagger UI:** [https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html](https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html)
 
-*(Note: Hosted on a free Render cloud instance. Initial requests may take 30–50 seconds to spin up from sleep mode.)*
+
 
 ---
 
 ## 💡 Core Domain & Business Logic
+When a vehicle is registered, the user selects a drivetrain type.
+The backend then applies the correct maintenance rules automatically.
 
 1. **Drivetrain Categorization (`GASOLINE`, `EV`, `HYBRID`, `DIESEL`):** When registering a vehicle, users assign a specific drivetrain.
 2. **Automated Rule Tagging & Filtering:** Maintenance rules are applied based on the corresponding fuel type.
+
 
    For example:
 * *Oil Changes (8,000 mi rule)* and *Spark Plugs (80,000 mi rule)* apply to **GASOLINE** and **HYBRID** powertrains.
@@ -92,14 +99,15 @@ Experience the cloud-deployed application and interact with the REST API directl
 * *Tire Rotations* and *Brake Pads* apply globally (**ALL**).
 
 
-3. **Overdue Calculation:** Calculate the remaining driving distance on the backend and enable the frontend to notify the user when the vehicle's driving distance is exceeded (e.g., ⚠️ over 4,000 miles).
+3. **Overdue Calculation:** The backend calculates remaining mileage until each service and flags overdue items so the frontend can notify the user.
+
 ---
 
 ## 🛠️ Engineering Highlights & Architectural Decisions
 
 ### 1. Constructor Injection over Field Injection
 * Uses only **constructor injection** with Lombok's `@RequiredArgsConstructor`.
-* **Reason:** To ensure class immutability and prevent potential `NullPointerException`s at runtime.
+* **Reason:** This keeps classes immutable and avoids accidental `NullPointerException`s at runtime.
 ### 2. DTO (Data Transfer Object) Pattern
 
 * Maps calculation results to a DTO (`MaintenanceStatusDto`) to prevent internal JPA entities from being exposed externally.
