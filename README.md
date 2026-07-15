@@ -62,7 +62,8 @@ cd maintenance-tracker-api
 
 Once the server starts, open your browser and visit:
 
-👉 **[http://localhost:8080/](http://localhost:8080/)** 
+👉 <a href="http://localhost:8080/" target="_blank"><strong>http://localhost:8080/</strong></a>
+
 
 ---
 
@@ -72,14 +73,15 @@ Once the server starts, open your browser and visit:
 
 Don't have time to spin up a local instance? If you want a fast look at the architecture and UI:
 
-👉 **[Watch YouTube Walkthrough ](https://youtu.be/ddNzAs8IrRo)** 
+👉 <a href="https://youtu.be/ddNzAs8IrRo" target="_blank"><strong>Watch YouTube Walkthrough</strong></a>
+
 
 ### 🌐 Live Cloud Instance
 
 *Note: Hosted on a free Render cloud instance. Initial requests may take ~3 minutes to wake up from sleep mode.*
 
-* **Dashboard**: [https://maintenance-tracker-api-ruyc.onrender.com/](https://maintenance-tracker-api-ruyc.onrender.com/)
-* **Swagger UI:** [https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html](https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html)
+* <a href="https://maintenance-tracker-api-ruyc.onrender.com/" target="_blank"><strong>Dashboard</strong></a>
+* <a href="https://maintenance-tracker-api-ruyc.onrender.com/swagger-ui/index.html" target="_blank"><strong>Swagger UI</strong></a>
 
 
 
@@ -131,5 +133,5 @@ The backend then applies the correct maintenance rules automatically.
 **Scott Lee**
 
 * Software Engineer | Systems & Backend Architecture
-* Connect with me on [LinkedIn](https://www.linkedin.com/in/scott-lee-dev/) | [GitHub](https://github.com/scottlee-dev)
+* Connect with me on <a href="https://www.linkedin.com/in/scott-lee-dev/" target="_blank"><strong>LinkedIn</strong></a> | <a href="https://github.com/scottlee-dev" target="_blank"><strong>GitHub</strong></a>
 
